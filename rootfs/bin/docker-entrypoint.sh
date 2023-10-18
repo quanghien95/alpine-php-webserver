@@ -22,9 +22,22 @@ shutdown() {
   exit
 }
 
-echo "Starting startup scripts in /docker-entrypoint-init.d ..."
+# Replace ENV vars in nginx configuration files
+tmpfile=$(mktemp)
+cat /etc/nginx/nginx.conf | envsubst "$(env | cut -d= -f1 | sed -e 's/^/$/')" | tee "$tmpfile" > /dev/null
+mv "$tmpfile" /etc/nginx/nginx.conf
 
-for script in $(find /docker-entrypoint-init.d/ -executable -type f); do
+# Replace ENV vars in php configuration files
+tmpfile=$(mktemp)
+cat /etc/php82/conf.d/custom.ini | envsubst "$(env | cut -d= -f1 | sed -e 's/^/$/')" | tee "$tmpfile" > /dev/null
+mv "$tmpfile" /etc/php82/conf.d/custom.ini
+
+tmpfile=$(mktemp)
+cat /etc/php82/php-fpm.d/www.conf | envsubst "$(env | cut -d= -f1 | sed -e 's/^/$/')" | tee "$tmpfile" > /dev/null
+mv "$tmpfile" /etc/php82/php-fpm.d/www.conf
+
+echo "Starting startup scripts in /docker-entrypoint-init.d ..."
+for script in $(find /docker-entrypoint-init.d/ -executable -type f | sort); do
 
     echo >&2 "*** Running: $script"
     $script
