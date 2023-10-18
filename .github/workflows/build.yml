@@ -35,9 +35,9 @@ jobs:
             GHCR_TAGS="$GHCR_TAGS,${GHCR_IMAGE}:beta"
           fi
 
-          echo "platforms=${DOCKER_PLATFORMS}" >> $GITHUB_ENV
-          echo "tags=${TAGS}" >> $GITHUB_ENV
-          echo "ghcr-tags=${GHCR_TAGS}" >> $GITHUB_ENV
+          echo "platforms=${DOCKER_PLATFORMS}" >> $GITHUB_OUTPUT
+          echo "tags=${TAGS}" >> $GITHUB_OUTPUT
+          echo "ghcr-tags=${GHCR_TAGS}" >> $GITHUB_OUTPUT
 
       # Step 3: Set up QEMU for multi-platform builds
       - name: Set up QEMU
