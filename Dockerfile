@@ -7,30 +7,31 @@ LABEL Maintainer="Ernesto Serrano <info@ernesto.es>" \
 # Install packages
 RUN apk --no-cache add \
         php82 \
-        php82-fpm \
-        php82-opcache \
-        php82-pecl-apcu \
-        php82-mysqli \
-        php82-pgsql \
-        php82-json \
-        php82-openssl \
-        php82-curl \
-        php82-zlib \
-        php82-soap \
-        php82-xml \
-        php82-fileinfo \
-        php82-phar \
-        php82-intl \
-        php82-dom \
-        php82-xmlreader \
         php82-ctype \
-        php82-session \
-        php82-iconv \
-        php82-tokenizer \
-        php82-zip \
-        php82-simplexml \
-        php82-mbstring \
+        php82-curl \
+        php82-dom \
+        php82-fileinfo \
+        php82-fpm \
         php82-gd \
+        php82-iconv \
+        php82-intl \
+        php82-json \
+        php82-mbstring \
+        php82-mysqli \
+        php82-opcache \
+        php82-openssl \
+        php82-pecl-apcu \
+        php82-pgsql \
+        php82-phar \
+        php82-session \
+        php82-simplexml \
+        php82-soap \
+        php82-sodium \
+        php82-tokenizer \
+        php82-xml \
+        php82-xmlreader \
+        php82-zip \
+        php82-zlib \
         nginx \
         runit \
         curl \
