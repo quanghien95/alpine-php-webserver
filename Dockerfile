@@ -10,6 +10,7 @@ RUN apk --no-cache add \
         php82-ctype \
         php82-curl \
         php82-dom \
+        php82-exif \
         php82-fileinfo \
         php82-fpm \
         php82-gd \
