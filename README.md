@@ -1,12 +1,12 @@
-# Docker PHP-FPM 8.3 & Nginx 1.24 on Alpine Linux
+# Docker PHP-FPM 8.3 & Nginx 1.26 on Alpine Linux
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/erseco/alpine-php-webserver.svg)](https://hub.docker.com/r/erseco/alpine-php-webserver/)
 ![Docker Image Size](https://img.shields.io/docker/image-size/erseco/alpine-php-webserver)
-![nginx 1.24.0](https://img.shields.io/badge/nginx-1.18-brightgreen.svg)
+![nginx 1.26.0](https://img.shields.io/badge/nginx-1.26-brightgreen.svg)
 ![php 8.3](https://img.shields.io/badge/php-8.3-brightgreen.svg)
 ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
-Example PHP-FPM 8.3 & Nginx 1.24 setup for Docker, build on [Alpine Linux](https://www.alpinelinux.org/).
+Example PHP-FPM 8.3 & Nginx 1.26 setup for Docker, build on [Alpine Linux](https://www.alpinelinux.org/).
 The image is only +/- 25MB large.
 
 Repository: https://github.com/erseco/alpine-php-webserver
@@ -36,6 +36,39 @@ Or mount your own code to be served by PHP-FPM & Nginx
 
     docker run -p 80:8080 -v ~/my-codebase:/var/www/html erseco/alpine-php-webserver
 
+## Running with Docker Compose
+
+Easily serve your local PHP files using Docker Compose. This setup mounts your `./php` directory and binds it to port 8080 on your local machine, allowing for immediate reflection of changes in your PHP files through a web server. It's perfect for local development and testing.
+
+### Docker Compose Configuration
+
+Here's a simple `docker-compose.yml` example to get you started:
+
+```yaml
+version: '3.8'
+
+services:
+  webserver:
+    image: erseco/alpine-php-webserver
+    ports:
+      - 8080:8080
+    volumes:
+      - ./php:/var/www/html
+    restart: unless-stopped
+```
+
+- **image**: Uses `erseco/alpine-php-webserver`, optimized for PHP applications.
+- **ports**: Maps port 8080 from the container to your local machine, accessible at `http://localhost:8080`.
+- **volumes**: Mounts your local `./php` directory to `/var/www/html` in the container, enabling live updates to your PHP files.
+- **restart**: Ensures the container automatically restarts unless manually stopped, for better reliability.
+
+### How to Use
+
+1. Save the above `docker-compose.yml` in your project directory.
+2. Run `docker-compose up -d` in your terminal, within the same directory.
+3. Access your PHP application at `http://localhost:8080`.
+
+This method ensures a seamless development process, allowing you to focus on coding rather than setup complexities.
 
 ## Adding additional daemons
 You can add additional daemons (e.g. your own app) to the image by creating runit entries. You only have to write a small shell script which runs your daemon, and runit will keep it up and running for you, restarting it when it crashes, etc.
