@@ -22,6 +22,8 @@ RUN apk --no-cache add \
         php82-opcache \
         php82-openssl \
         php82-pecl-apcu \
+        php82-pdo \
+        php82-pdo_mysql \
         php82-pgsql \
         php82-phar \
         php82-session \
