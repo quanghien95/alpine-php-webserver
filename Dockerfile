@@ -6,35 +6,35 @@ LABEL Maintainer="Ernesto Serrano <info@ernesto.es>" \
 
 # Install packages
 RUN apk --no-cache add \
-        php82 \
-        php82-ctype \
-        php82-curl \
-        php82-dom \
-        php82-exif \
-        php82-fileinfo \
-        php82-fpm \
-        php82-gd \
-        php82-iconv \
-        php82-intl \
-        php82-json \
-        php82-mbstring \
-        php82-mysqli \
-        php82-opcache \
-        php82-openssl \
-        php82-pecl-apcu \
-        php82-pdo \
-        php82-pdo_mysql \
-        php82-pgsql \
-        php82-phar \
-        php82-session \
-        php82-simplexml \
-        php82-soap \
-        php82-sodium \
-        php82-tokenizer \
-        php82-xml \
-        php82-xmlreader \
-        php82-zip \
-        php82-zlib \
+        php83 \
+        php83-ctype \
+        php83-curl \
+        php83-dom \
+        php83-exif \
+        php83-fileinfo \
+        php83-fpm \
+        php83-gd \
+        php83-iconv \
+        php83-intl \
+        php83-json \
+        php83-mbstring \
+        php83-mysqli \
+        php83-opcache \
+        php83-openssl \
+        php83-pecl-apcu \
+        php83-pdo \
+        php83-pdo_mysql \
+        php83-pgsql \
+        php83-phar \
+        php83-session \
+        php83-simplexml \
+        php83-soap \
+        php83-sodium \
+        php83-tokenizer \
+        php83-xml \
+        php83-xmlreader \
+        php83-zip \
+        php83-zlib \
         nginx \
         runit \
         curl \
