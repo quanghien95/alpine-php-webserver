@@ -1,7 +1,8 @@
-# Docker PHP-FPM 8.3 & Nginx 1.26 on Alpine Linux
+# Docker PHP-FPM 8.3 & Nginx 1.26 on Alpine Linux 3.20
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/erseco/alpine-php-webserver.svg)](https://hub.docker.com/r/erseco/alpine-php-webserver/)
 ![Docker Image Size](https://img.shields.io/docker/image-size/erseco/alpine-php-webserver)
+![alpine 3.20](https://img.shields.io/badge/alpine-3.20-brightgreen.svg)
 ![nginx 1.26.0](https://img.shields.io/badge/nginx-1.26-brightgreen.svg)
 ![php 8.3](https://img.shields.io/badge/php-8.3-brightgreen.svg)
 ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)
@@ -127,21 +128,22 @@ _Note; Because `-v` requires an absolute path I've added `pwd` in the example to
 
 You can define the next environment variables to change values from NGINX and PHP
 
-| Server | Variable Name           | Default | description                                                                                                                                                                                                                                            |
-|--------|-------------------------|---------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| NGINX  | client_max_body_size    | 2m      | Sets the maximum allowed size of the client request body, specified in the “Content-Length” request header field.                                                                                                                                      |
-| PHP8   | clear_env               | no      | Clear environment in FPM workers. Prevents arbitrary environment variables from reaching FPM worker processes by clearing the environment in workers before env vars specified in this pool configuration are added.                                   |
-| PHP8   | allow_url_fopen         | On      | Enable the URL-aware fopen wrappers that enable accessing URL object like files. Default wrappers are provided for the access of remote files using the ftp or http protocol, some extensions like zlib may register additional wrappers.              |
-| PHP8   | allow_url_include       | Off     | Allow the use of URL-aware fopen wrappers with the following functions: include(), include_once(), require(), require_once().                                                                                                                          |
-| PHP8   | display_errors          | Off     | Eetermine whether errors should be printed to the screen as part of the output or if they should be hidden from the user.                                                                                                                              |
-| PHP8   | file_uploads            | On      | Whether or not to allow HTTP file uploads.                                                                                                                                                                                                             |
-| PHP8   | max_execution_time      | 0       | Maximum time in seconds a script is allowed to run before it is terminated by the parser. This helps prevent poorly written scripts from tying up the server. The default setting is 30.                                                               |
-| PHP8   | max_input_time          | -1      | Maximum time in seconds a script is allowed to parse input data, like POST, GET and file uploads.                                                                                                                                                      |
-| PHP8   | max_input_vars          | 1000    | Maximum number of input variables allowed per request and can be used to deter denial of service attacks involving hash collisions on the input variable names.                                                                                        |
-| PHP8   | memory_limit            | 128M    | Maximum amount of memory in bytes that a script is allowed to allocate. This helps prevent poorly written scripts for eating up all available memory on a server. Note that to have no memory limit, set this directive to -1.                         |
-| PHP8   | post_max_size           | 8M      | Max size of post data allowed. This setting also affects file upload. To upload large files, this value must be larger than upload_max_filesize. Generally speaking, memory_limit should be larger than post_max_size.                                 |
-| PHP8   | upload_max_filesize     | 2M      | Maximum size of an uploaded file.                                                                                                                                                                                                                      |
-| PHP8   | zlib_output_compression | On      | Whether to transparently compress pages. If this option is set to "On" in php.ini or the Apache configuration, pages are compressed if the browser sends an "Accept-Encoding: gzip" or "deflate" header.                                               |
+| Server | Variable Name           | Default       | description                                                                                                                                                                                                                                            |
+|--------|-------------------------|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| NGINX  | nginx_root_directory    | /var/www/html | Sets the root directory for the NGINX server, which specifies the location from which files are served. This is the directory where your web application's public files should reside.                                                                 |
+| NGINX  | client_max_body_size    | 2m            | Sets the maximum allowed size of the client request body, specified in the “Content-Length” request header field.                                                                                                                                      |
+| PHP8   | clear_env               | no            | Clear environment in FPM workers. Prevents arbitrary environment variables from reaching FPM worker processes by clearing the environment in workers before env vars specified in this pool configuration are added.                                   |
+| PHP8   | allow_url_fopen         | On            | Enable the URL-aware fopen wrappers that enable accessing URL object like files. Default wrappers are provided for the access of remote files using the ftp or http protocol, some extensions like zlib may register additional wrappers.              |
+| PHP8   | allow_url_include       | Off           | Allow the use of URL-aware fopen wrappers with the following functions: include(), include_once(), require(), require_once().                                                                                                                          |
+| PHP8   | display_errors          | Off           | Eetermine whether errors should be printed to the screen as part of the output or if they should be hidden from the user.                                                                                                                              |
+| PHP8   | file_uploads            | On            | Whether or not to allow HTTP file uploads.                                                                                                                                                                                                             |
+| PHP8   | max_execution_time      | 0             | Maximum time in seconds a script is allowed to run before it is terminated by the parser. This helps prevent poorly written scripts from tying up the server. The default setting is 30.                                                               |
+| PHP8   | max_input_time          | -1            | Maximum time in seconds a script is allowed to parse input data, like POST, GET and file uploads.                                                                                                                                                      |
+| PHP8   | max_input_vars          | 1000          | Maximum number of input variables allowed per request and can be used to deter denial of service attacks involving hash collisions on the input variable names.                                                                                        |
+| PHP8   | memory_limit            | 128M          | Maximum amount of memory in bytes that a script is allowed to allocate. This helps prevent poorly written scripts for eating up all available memory on a server. Note that to have no memory limit, set this directive to -1.                         |
+| PHP8   | post_max_size           | 8M            | Max size of post data allowed. This setting also affects file upload. To upload large files, this value must be larger than upload_max_filesize. Generally speaking, memory_limit should be larger than post_max_size.                                 |
+| PHP8   | upload_max_filesize     | 2M            | Maximum size of an uploaded file.                                                                                                                                                                                                                      |
+| PHP8   | zlib_output_compression | On            | Whether to transparently compress pages. If this option is set to "On" in php.ini or the Apache configuration, pages are compressed if the browser sends an "Accept-Encoding: gzip" or "deflate" header.                                               |
 
 _Note; Because `-v` requires an absolute path I've added `pwd` in the example to return the absolute path to the current directory_
 
@@ -181,4 +183,12 @@ RUN composer install \
 # dependencies downloaded by composer
 FROM erseco/alpine-php-webserver
 COPY --chown=nginx --from=composer /app /var/www/html
+```
+
+## Running Commands as Root
+
+In certain situations, you might need to run commands as `root` within your Moodle container, for example, to install additional packages. You can do this using the `docker-compose exec` command with the `--user root` option. Here's how:
+
+```bash
+docker-compose exec --user root alpine-php-webserver sh
 ```
