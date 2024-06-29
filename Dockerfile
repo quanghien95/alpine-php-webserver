@@ -78,7 +78,6 @@ EXPOSE 8080
 # Let runit start nginx & php-fpm
 # Ensure /bin/docker-entrypoint.sh is always executed
 ENTRYPOINT ["/bin/docker-entrypoint.sh"]
-CMD [""]
 
 
 # Configure a healthcheck to validate that everything is up&running
