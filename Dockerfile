@@ -59,7 +59,10 @@ RUN apk --no-cache add \
 # Remove default server definition
     && rm /etc/nginx/http.d/default.conf \
 # Make sure files/folders needed by the processes are accessable when they run under the nobody user
-    && chown -R nobody:nobody /var/www/html /run /var/lib/nginx /var/log/nginx
+    && chown -R nobody:nobody /run \
+    && chown -R nobody:nobody /var/lib/nginx \
+    && chown -R nobody:nobody /var/www/html \
+    && chown -R nobody:nobody /var/log/nginx
 
 
 # Add configuration files
