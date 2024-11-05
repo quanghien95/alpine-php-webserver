@@ -7,6 +7,7 @@ LABEL Maintainer="Ernesto Serrano <info@ernesto.es>" \
 # Install packages
 RUN apk --no-cache add \
         php83 \
+        php83-bcmath \
         php83-ctype \
         php83-curl \
         php83-dom \
@@ -29,10 +30,13 @@ RUN apk --no-cache add \
         php83-session \
         php83-simplexml \
         php83-soap \
+        php83-sockets \
         php83-sodium \
         php83-tokenizer \
         php83-xml \
         php83-xmlreader \
+        php83-xmlwriter \
+        php83-xsl \
         php83-zip \
         php83-zlib \
         nginx \
@@ -65,6 +69,8 @@ RUN apk --no-cache add \
 # Add configuration files
 COPY --chown=nobody rootfs/ /
 
+COPY --from=composer:2.7 /usr/bin/composer /usr/local/bin/composer
+
 # Switch to use a non-root user from here on
 USER nobody
 
@@ -72,7 +78,7 @@ USER nobody
 WORKDIR /var/www/html
 
 # Expose the port nginx is reachable on
-EXPOSE 8080
+EXPOSE 80
 
 # Let runit start nginx & php-fpm
 # Ensure /bin/docker-entrypoint.sh is always executed
@@ -80,7 +86,7 @@ ENTRYPOINT ["/bin/docker-entrypoint.sh"]
 
 
 # Configure a healthcheck to validate that everything is up&running
-HEALTHCHECK --timeout=10s CMD curl --silent --fail http://127.0.0.1:8080/fpm-ping || exit 1
+HEALTHCHECK --timeout=10s CMD curl --silent --fail http://127.0.0.1:80/fpm-ping || exit 1
 
 ENV nginx_root_directory=/var/www/html \
     client_max_body_size=2M \

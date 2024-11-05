@@ -1,0 +1,14 @@
+#!/bin/bash
+[ -z "$1" ] && echo "Please specify a os to run container (eg: --linux or --macos or --init)" && exit
+
+if [ "$1" == "--init" ]; then
+  echo "Running init container for first copy file data and database"
+  docker compose up -d
+else
+  if [ "$1" == "--macos" ]; then
+    docker compose -f docker-compose-macos.yml up -d
+  fi
+  if [ "$1" == "--linux" ]; then
+    docker compose -f docker-compose-linux.yml up -d
+  fi
+fi

@@ -1,0 +1,8 @@
+#!/bin/bash
+[ -z "$1" ]
+if [ "$1" == "--root" ]; then
+    docker compose exec -u root app sh
+else
+    echo "For sudo access: bin/bash --root"
+    docker compose exec -u nobody app sh
+fi

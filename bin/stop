@@ -1,0 +1,10 @@
+#!/bin/bash
+[ -z "$1" ] && echo "Please specify a os to stop container (eg: --linux or --macos)" && exit
+
+if [ "$1" == "--linux" ]; then
+  docker compose -f docker-compose-linux.yml stop
+else
+  if [ "$1" == "--macos" ]; then
+    docker compose -f docker-compose-macos.yml stop
+  fi
+fi

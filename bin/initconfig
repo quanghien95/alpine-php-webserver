@@ -1,0 +1,49 @@
+#!/bin/bash
+echo "Import current config"
+bin/magento app:config:import
+
+echo "Turn off Magento_TwoFactorAuth, Magento_AdminAdobeImsTwoFactorAuth, Magento_Csp";
+bin/magento module:disable Magento_AdminAdobeImsTwoFactorAuth
+bin/magento module:disable Magento_TwoFactorAuth
+
+echo "Setup config for local environment";
+bin/magento config:set admin/security/admin_account_sharing 1
+bin/magento config:set admin/security/password_is_forced 0
+bin/magento config:set admin/security/session_lifetime 31536000
+bin/magento config:set admin/security/password_lifetime ''
+bin/magento config:set admin/usage/enabled 0
+bin/magento config:set admin/url/use_custom 0
+bin/magento config:set admin/url/use_custom_path 0
+bin/magento config:set dev/debug/template_hints_storefront 1
+bin/magento config:set dev/debug/template_hints_storefront_show_with_parameter 1
+bin/magento config:set dev/debug/template_hints_parameter_value magento
+bin/magento config:set web/cookie/cookie_httponly 1
+bin/magento config:set web/cookie/cookie_path ''
+bin/magento config:set web/cookie/cookie_domain ''
+
+echo "Turn off recapcha"
+bin/magento config:set admin/captcha/enable 0
+bin/magento config:set recaptcha_backend/type_for/user_login 0
+bin/magento config:set recaptcha_backend/type_for/user_forgot_password 0
+bin/magento config:set customer/captcha/enable 0
+bin/magento security:recaptcha:disable-for-user-forgot-password
+bin/magento security:recaptcha:disable-for-user-login
+
+echo "Setup default store url to https://magento.local/ . Please change the config in env.php"
+bin/magento config:set --scope=default --scope-code=0 --lock-env web/unsecure/base_url 'https://magento.local/'
+bin/magento config:set --scope=default --scope-code=0 --lock-env web/unsecure/base_link_url '{{unsecure_base_url}}'
+bin/magento config:set --scope=default --scope-code=0 --lock-env web/unsecure/base_static_url ''
+bin/magento config:set --scope=default --scope-code=0 --lock-env web/unsecure/base_media_url ''
+bin/magento config:set --scope=default --scope-code=0 --lock-env web/secure/base_url 'https://magento.local/'
+bin/magento config:set --scope=default --scope-code=0 --lock-env web/secure/base_link_url '{{unsecure_base_url}}'
+bin/magento config:set --scope=default --scope-code=0 --lock-env web/secure/base_static_url ''
+bin/magento config:set --scope=default --scope-code=0 --lock-env web/secure/base_media_url ''
+
+echo "Change to developer mode"
+bin/magento deploy:mode:set developer
+
+echo "Enable cache"
+bin/magento cache:enable
+
+echo "Flushing cache";
+bin/magento cache:flush

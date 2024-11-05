@@ -1,0 +1,79 @@
+services:
+  app:
+    build:
+      context: .
+    image: jacob/alpine-magento:8.3
+    ports:
+      - 80:80
+    volumes:
+      - app-data:/var/www/html
+      ## Host mounts with performance penalty, only put what is necessary here
+      - ./src/app:/var/www/html/app:cached
+      - ./src/composer.json:/var/www/html/composer.json:cached
+      - ./src/composer.lock:/var/www/html/composer.lock:cached
+    environment:
+      client_max_body_size: 1024M
+      memory_limit: 1024M
+      display_errors: On
+      post_max_size: 1024M
+      upload_max_filesize: 1024M
+
+  db:
+    image: mysql:8.0
+    hostname: db
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./config/mysql/my.cnf:/etc/my.cnf
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db
+
+  elasticsearch:
+    build:
+      context: ./config/elasticsearch
+    image: jacob/elasticsearch-magento:7.17.8
+    hostname: elasticsearch
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+      - ./config/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=false
+      - logger.level=WARN
+      # Avoid test failures due to small disks.
+      - cluster.routing.allocation.disk.threshold_enabled=false
+
+  maildev:
+    image: maildev/maildev:2.1.0
+    hostname: maildev
+    ports:
+      - 1080:1080
+    volumes:
+      - ./var/data/maildev:/var/data/maildev
+    environment:
+      - MAILDEV_MAIL_DIRECTORY=/var/data/maildev
+    user: root
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.2.1
+    ports:
+      - 8080:80
+    environment:
+      - PMA_HOST=mysql
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+
+volumes:
+  app-data:
+  db-data:
+  elasticsearch-data:
+  maildev-data:

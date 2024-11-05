@@ -1,0 +1,37 @@
+#!/bin/bash
+
+echo 'Remove all cache folder, env file';
+docker compose exec app sh -c 'rm -rf /var/www/html/generated/ /var/www/html/var/* /var/www/html/app/etc/env.php /var/www/html/app/etc/config.php'
+
+echo 'Install Magento';
+bin/magento setup:install \
+--base-url=https://magento.local \
+--db-host=db \
+--db-name=db \
+--db-user=root \
+--db-password=root \
+--backend-frontname=admin \
+--admin-firstname=admin \
+--admin-lastname=admin \
+--admin-email=admin@admin.com \
+--admin-user=admin \
+--admin-password=admin123 \
+--language=en_US \
+--currency=USD \
+--timezone=UTC \
+--use-rewrites=1 \
+--search-engine=elasticsearch7 \
+--elasticsearch-host=elasticsearch \
+--elasticsearch-port=9200 \
+--elasticsearch-index-prefix=magento \
+--cleanup-database
+
+echo "Installed magento, url: https://magento.local/";
+echo "User: admin"
+echo "Password: admin@123"
+
+echo "Create more admin account"
+bin/createadmin
+
+echo "Setup first config"
+bin/initconfig

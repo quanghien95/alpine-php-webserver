@@ -1,0 +1,15 @@
+services:
+  app:
+    build:
+      context: .
+    image: jacob/alpine-magento:8.3
+    ports:
+      - 80:80
+    volumes:
+      - app-data:/var/www/html
+
+volumes:
+  app-data:
+  db-data:
+  elasticsearch-data:
+  maildev-data:

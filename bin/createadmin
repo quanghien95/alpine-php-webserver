@@ -1,0 +1,12 @@
+#!/bin/bash
+
+bin/magento admin:user:create --admin-user=admin --admin-password=admin@123 --admin-email=admin@gmail.com --admin-firstname=admin --admin-lastname=admin
+bin/magento admin:user:create --admin-user=admin1 --admin-password=admin@123 --admin-email=admin1@gmail.com --admin-firstname=admin1 --admin-lastname=admin1
+bin/magento admin:user:create --admin-user=admin2 --admin-password=admin@123 --admin-email=admin2@gmail.com --admin-firstname=admin2 --admin-lastname=admin2
+bin/magento admin:user:create --admin-user=admin3 --admin-password=admin@123 --admin-email=admin3@gmail.com --admin-firstname=admin3 --admin-lastname=admin3
+bin/magento admin:user:create --admin-user=admin4 --admin-password=admin@123 --admin-email=admin4@gmail.com --admin-firstname=admin4 --admin-lastname=admin4
+bin/magento admin:user:create --admin-user=admin5 --admin-password=admin@123 --admin-email=admin5@gmail.com --admin-firstname=admin5 --admin-lastname=admin5
+
+echo "Created admin user";
+echo "User: admin admin1 admin2 admin3 admin4 admin5"
+echo "Password: admin@123"
