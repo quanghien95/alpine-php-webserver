@@ -10,6 +10,7 @@ RUN apk --no-cache add \
         php83-bcmath \
         php83-ctype \
         php83-curl \
+        php83-dev \
         php83-dom \
         php83-exif \
         php83-fileinfo \
@@ -23,6 +24,7 @@ RUN apk --no-cache add \
         php83-opcache \
         php83-openssl \
         php83-pecl-apcu \
+        php83-pear \
         php83-pdo \
         php83-pdo_mysql \
         php83-pgsql \
@@ -65,6 +67,12 @@ RUN apk --no-cache add \
 # Make sure files/folders needed by the processes are accessable when they run under the nobody user
     && mkdir -p /run /var/lib/nginx /var/www/html /var/log/nginx \
     && chown -R nobody:nobody /run /var/lib/nginx /var/www/html /var/log/nginx
+
+# Install Xdebug
+RUN apk --update --no-cache add autoconf g++ make zlib-dev linux-headers \
+    && pecl install xdebug-3.3.2 \
+    && pecl clear-cache \
+    && apk del --purge autoconf g++ make zlib-dev linux-headers
 
 # Add configuration files
 COPY --chown=nobody rootfs/ /
